@@ -3,9 +3,12 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const mongoose = require("mongoose");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+
+require("dotenv").config();
 
 const app = express();
 
@@ -18,6 +21,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// Connect to mongoDB database
+mongoose.connect(
+  process.env.DB_CONNECT,
+  { useUnifiedTopology: true, useNewUrlParser: true },
+  (err) => {
+    err ? console.log(err) : console.log("DB connected");
+  }
+);
+
+mongoose.set("useCreateIndex", true);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
