@@ -27,7 +27,16 @@ const userSchema = mongoose.Schema(
       ]
     },
     password: { type: String, required: true, min: 6 },
-    emailCredential: String,
+    emailCredential: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      validate: [validateEmail, "Please fill a valid email address"],
+      match: [
+        /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/,
+        "Please fill a valid email address"
+      ]
+    },
     passCredential: String,
     projects: [{ type: Schema.Types.ObjectId, ref: "Project" }]
   },
@@ -40,6 +49,10 @@ userSchema.pre("save", async function(next) {
     var salt = bcrypt.genSaltSync(10);
     this.password = bcrypt.hashSync(this.password, salt);
   }
+  if (this.passCredential) {
+    var salt = bcrypt.genSaltSync(10);
+    this.passCredential = bcrypt.hashSync(this.passCredential, salt);
+  }
   next();
 });
 
@@ -48,8 +61,12 @@ userSchema.pre("save", async function(next) {
  * @param {string}
  * @return {Boolean}
  */
-userSchema.methods.verifyPassword = function(password) {
-  return bcrypt.compareSync(password, this.password);
+userSchema.statics.verifyPassword = (password, encryptPass) => {
+  return bcrypt.compareSync(password, encryptPass);
+};
+
+userSchema.statics.verifyPassCredential = (passCredential, encrypassCred) => {
+  return bcrypt.compareSync(passCredential, encrypassCred);
 };
 
 // Export the User model
