@@ -5,8 +5,7 @@ module.exports = filterData = (
   username,
   customTemplateData,
   isCustomTemplate,
-  subscribe,
-  slug
+  emailCredential
 ) => {
   let obj = {
     name,
@@ -15,8 +14,7 @@ module.exports = filterData = (
     username,
     customTemplateData,
     isCustomTemplate,
-    subscribe,
-    slug
+    emailCredential
   };
 
   for (let key in obj) {
