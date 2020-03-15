@@ -4,9 +4,11 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const projectsRouter = require("./routes/projects");
 
 require("dotenv").config();
 
@@ -32,9 +34,12 @@ mongoose.connect(
 );
 
 mongoose.set("useCreateIndex", true);
+mongoose.set("useFindAndModify", false);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/projects", projectsRouter);
+app.use("/api/v1/projects", cors(), projectsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
