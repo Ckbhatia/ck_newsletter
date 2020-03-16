@@ -3,6 +3,8 @@ const projectValidation = require("../utils/projectValidation");
 const filterData = require("../utils/filterData");
 const Auth = require("../utils/auth");
 const user = require("../models/user");
+const triggerMail = require("../utils/mailer");
+const template = require("../utils/template");
 
 const getOne = (model, reqType) => async (req, res) => {
   // Action for login
@@ -76,14 +78,14 @@ const createOne = (model, reqType) => async (req, res) => {
     if (errmsg) {
       return res
         .status(400)
-        .json({ msg: "There's an error.", status: "failed", error: e.errmsg });
+        .json({ msg: "There's an error.", status: "failed", error: errmsg });
     }
   } else if (reqType === "createUser") {
     const errmsg = await userValidation(name, email, username, password);
     if (errmsg) {
       return res
         .status(400)
-        .json({ msg: "There's an error.", status: "failed", error: e.errmsg });
+        .json({ msg: "There's an error.", status: "failed", error: errmsg });
     }
   }
   try {
@@ -148,7 +150,8 @@ const updateOne = (model, reqType) => async (req, res) => {
     subscriber,
     slug,
     emailCredential,
-    passCredential
+    passCredential,
+    emailService
   } = req.body;
 
   try {
@@ -181,7 +184,6 @@ const updateOne = (model, reqType) => async (req, res) => {
         msg = "Unsubscribed successfully.";
         break;
       case "updateSlugs":
-        // TODO: Add trigger newsletter to subscribers functionality
         updatedDoc = await model.findOneAndUpdate({ apiKey }, { new: true });
         // 1. Checks if slug is already in the list.
         // 2. Checks condition checks for length and type
@@ -199,8 +201,27 @@ const updateOne = (model, reqType) => async (req, res) => {
           });
         }
         updatedDoc.slugs.push(slug);
-        updatedDoc.save();
+        await updatedDoc.save();
         msg = "Slug pushed successfully.";
+        // Get the user to get email credentials
+        const response = await user.findOne({ username: updatedDoc.author });
+        // Ready the template and trigger a mail
+        const html = await template(
+          response.name,
+          updatedDoc.siteUrl,
+          slug,
+          updatedDoc.name
+        );
+        await triggerMail(
+          response.emailCredential,
+          response.passCredential,
+          response.emailService,
+          response.email,
+          null,
+          updatedDoc.subscribers,
+          "The latest article for you.",
+          html
+        );
         break;
       default:
         // Filter the objects with valid values
@@ -211,8 +232,10 @@ const updateOne = (model, reqType) => async (req, res) => {
           username,
           customTemplateData,
           isCustomTemplate,
-          emailCredential
+          emailCredential,
+          emailService
         );
+
         updatedDoc = await model.findOneAndUpdate(
           { $or: [{ _id: req.user._id }, { _id: req.params.id }] },
           data,
