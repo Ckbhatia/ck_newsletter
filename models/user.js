@@ -38,6 +38,23 @@ const userSchema = mongoose.Schema(
       ]
     },
     passCredential: String,
+    emailService: {
+      type: String,
+      enum: [
+        "gmail",
+        "mailgun",
+        "sendgrid",
+        "zoho",
+        "hotmail",
+        "godaddy",
+        "godaddyasia",
+        "godaddyeurope",
+        "fastmail",
+        "icloud",
+        "mailjet",
+        "aol"
+      ]
+    },
     projects: [{ type: Schema.Types.ObjectId, ref: "Project" }]
   },
   { timestamps: true }
@@ -49,10 +66,11 @@ userSchema.pre("save", async function(next) {
     var salt = bcrypt.genSaltSync(10);
     this.password = bcrypt.hashSync(this.password, salt);
   }
-  if (this.passCredential) {
-    var salt = bcrypt.genSaltSync(10);
-    this.passCredential = bcrypt.hashSync(this.passCredential, salt);
-  }
+  // TODO: temprory stopped the hashing
+  // if (this.passCredential) {
+  //   var salt = bcrypt.genSaltSync(10);
+  //   this.passCredential = bcrypt.hashSync(this.passCredential, salt);
+  // }
   next();
 });
 
