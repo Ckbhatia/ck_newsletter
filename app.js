@@ -35,6 +35,7 @@ mongoose.connect(
 
 mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
+mongoose.set("useUnifiedTopology", true);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
