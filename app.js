@@ -4,6 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const expressStaticGzip = require("express-static-gzip");
 const cors = require("cors");
 
 const indexRouter = require("./routes/index");
@@ -37,10 +38,48 @@ mongoose.set("useCreateIndex", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useUnifiedTopology", true);
 
-app.use("/", indexRouter);
+app.use(
+  "/dist/bundle",
+  expressStaticGzip(path.join(__dirname, "dist/bundle"), {
+    enableBrotli: true,
+    orderPreference: ["br", "gz"],
+    setHeaders: function(res, path) {
+      res.setHeader("Cache-Control", "public, max-age=31536000");
+    }
+  })
+);
+
+// Using webpack for our development
+if (process.env.NODE_ENV === "development") {
+  const webpack = require("webpack");
+  const webpackConfig = require("./webpack.config");
+  const compiler = webpack(webpackConfig);
+
+  app.use(
+    require("webpack-dev-middleware")(compiler, {
+      noInfo: true,
+      publicPath: webpackConfig.output.publicPath
+    })
+  );
+
+  app.use(require("webpack-hot-middleware")(compiler));
+} else {
+  const webpack = require("webpack");
+  const webpackConfig = require("./webpack.config.prod");
+  const compiler = webpack(webpackConfig);
+
+  app.use(
+    require("webpack-dev-middleware")(compiler, {
+      noInfo: true,
+      publicPath: webpackConfig.output.publicPath
+    })
+  );
+}
+
+app.use("/api/v1/projects", cors(), projectsRouter);
 app.use("/users", usersRouter);
 app.use("/projects", projectsRouter);
-app.use("/api/v1/projects", cors(), projectsRouter);
+app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
