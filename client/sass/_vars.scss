@@ -1,0 +1,58 @@
+// =========================
+// Variables
+// =========================
+
+$font_family: "Roboto", sans-serif;
+$primary_color: #40b9ff;
+$third_color: rgb(138, 212, 255);
+$secondary_color: #76838f;
+$background-dark: #131217;
+$background-secondary: #232129;
+$text_color: #2b2d38;
+$text_color_secondary: rgba(245, 245, 245, 0.9);
+$text_color_teritiary: #777777;
+$secondary_background: #f7f7f7;
+$dark_black: #080808;
+$primary_white: #fff;
+$secondary_light: #dddddd;
+$secondary_dark: #1c1e29;
+$text_light_dark: #3b3e4d;
+$textDark: #080808;
+
+// =========================
+// Mixins
+// =========================
+
+%flex-between {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+%flex-start {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+%flex-center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
