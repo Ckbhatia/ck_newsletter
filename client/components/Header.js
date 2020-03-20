@@ -44,6 +44,7 @@ export default function Header() {
 }
 
 const HeaderElement = styled.header`
+  height: 10vh;
   background-color: #40b9ff;
   .header-container {
     height: 4.5rem;

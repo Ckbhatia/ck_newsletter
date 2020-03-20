@@ -15,7 +15,7 @@ const FooterElement = styled.footer`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 6rem;
+  height: 5vh;
   .footer-text {
     font-size: 1rem;
     color: #a6adc9;
