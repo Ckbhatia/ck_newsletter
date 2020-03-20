@@ -1,40 +1,60 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Context from "./Context";
 
 export default function Header() {
+  const { user, handleLogout } = useContext(Context);
+
   return (
     <HeaderElement className="header-main-container">
       <div className="header-container flex-between">
         <div className="heading-container">
-          <Link to="/">
-            <h1 className="main-heading-text">Ck newsletter</h1>
-          </Link>
+          {user ? (
+            <Link to="/dashboard">
+              <h1 className="main-heading-text">Ck newsletter</h1>
+            </Link>
+          ) : (
+            <Link to="/">
+              <h1 className="main-heading-text">Ck newsletter</h1>
+            </Link>
+          )}
         </div>
         <div className="header-navigation-container">
           <nav className="navigation-container">
             <ul className="nav-list-container">
-              {/* TODO: show nav on condition */}
-              <li className="nav-item">
-                <Link to="/login">
-                  <span className="login-text nav-text">Log in</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/register">
-                  <span className="signup-text nav-text">Sign up</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/account/profile">
-                  <span className="profile-text nav-text">Profile</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/login">
-                  <span className="logout-text nav-text">Log out</span>
-                </Link>
-              </li>
+              {user ? (
+                <>
+                  <li className="nav-item">
+                    <Link to="/account/profile">
+                      <span className="profile-text nav-text">Profile</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/login">
+                      <button
+                        onClick={handleLogout}
+                        className="logout-text nav-text"
+                      >
+                        Log out
+                      </button>
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link to="/login">
+                      <span className="login-text nav-text">Log in</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/register">
+                      <span className="signup-text nav-text">Sign up</span>
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
@@ -79,7 +99,6 @@ const HeaderElement = styled.header`
       }
     }
   }
-  // Link
   a {
     text-decoration: none;
   }
