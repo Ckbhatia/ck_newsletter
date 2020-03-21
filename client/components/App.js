@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
+import axios from "axios";
 import Context from "./Context";
 import Layout from "./Layout";
 import Loader from "./Loader";
@@ -7,15 +8,47 @@ import Loader from "./Loader";
 const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
 
-const App = () => {
+// Axios configuration
+axios.defaults.baseURL =
+  process.env.NODE_ENV === "production"
+    ? config.productionRootURL
+    : "http://localhost:3000/";
+
+const App = (props) => {
   const [user, updateUser] = useState(null);
   const [projects, updateProjects] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("userToken")) {
-      // TODO: Fetch the user
+    const token = JSON.parse(localStorage.getItem("userToken"));
+    if (token) {
+      fetchUser(token);
+      // TODO: Fetch the projects
     }
   }, []);
+
+  const fetchUser = async (token) => {
+    try {
+      const { data, status } = await axios.get("/users", {
+        headers: {
+          Authorization: token
+        }
+      });
+      if (status === 200) {
+        // Set the user
+        await updateUser(data.user);
+        // Redirect to the dashboard page
+        props.history.push("/dashboard");
+      } else {
+        // Clear the invalid tokens and redirect to the login
+        localStorage.clear();
+        props.history.push("/login");
+      }
+    } catch (err) {
+      // Clear the invalid tokens and redirect to the login
+      localStorage.clear();
+      props.history.push("/login");
+    }
+  };
 
   const handleLogout = () => {
     updateUser(null);
@@ -103,12 +136,10 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
-      <Context.Provider value={{ user, projects, handleLogout }}>
-        {user ? privateRoutes() : publicRoutes()}
-      </Context.Provider>
-    </BrowserRouter>
+    <Context.Provider value={{ user, projects, handleLogout }}>
+      {user ? privateRoutes() : publicRoutes()}
+    </Context.Provider>
   );
 };
 
-export default App;
+export default withRouter(App);
