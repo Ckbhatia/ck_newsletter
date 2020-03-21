@@ -22,7 +22,7 @@ const App = (props) => {
     const token = JSON.parse(localStorage.getItem("userToken"));
     if (token) {
       fetchUser(token);
-      // TODO: Fetch the projects
+      fetchProjects(token);
     }
   }, []);
 
@@ -36,8 +36,29 @@ const App = (props) => {
       if (status === 200) {
         // Set the user
         await updateUser(data.user);
+      } else {
+        // Clear the invalid tokens and redirect to the login
+        localStorage.clear();
+        props.history.push("/login");
+      }
+    } catch (err) {
+      // Clear the invalid tokens and redirect to the login
+      localStorage.clear();
+      props.history.push("/login");
+    }
+  };
+
+  const fetchProjects = async (token) => {
+    try {
+      const { data, status } = await axios.get("/projects", {
+        headers: {
+          Authorization: token
+        }
+      });
+      if (status === 200) {
+        // Set the user
+        await updateProjects(data.data);
         // Redirect to the dashboard page
-        props.history.push("/dashboard");
       } else {
         // Clear the invalid tokens and redirect to the login
         localStorage.clear();
