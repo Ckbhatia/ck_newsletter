@@ -49,11 +49,11 @@ const Login = (props) => {
             Don't have an account?
           </Link>
         </div>
-        {isError && (
-          <div className="error-container center-child">
-            <span className="error-text">Email or password is invalid</span>
-          </div>
-        )}
+        <div className="error-container center-child">
+          <span className={`error-text error-${isError}`}>
+            Email or password is invalid
+          </span>
+        </div>
         <div className="form-container">
           <form className="form" onSubmit={handleSubmit}>
             <input
@@ -92,7 +92,11 @@ const Div = styled.div`
   align-items: center;
   height: 85vh;
   .form-main-container {
-    margin: 2.2rem 0;
+    padding: 1rem 0;
+    background-color: #fff;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(230, 230, 230, 1);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(230, 230, 230, 1);
+    box-shadow: 0px 0px 2px 1px rgba(230, 230, 230, 1);
   }
 
   .form-heading {
@@ -139,10 +143,28 @@ const Div = styled.div`
       }
     }
   }
+
+  .error-container {
+    // position: relative;
+    // top: 20px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+
   .error-text {
     font-size: 1.2rem;
     font-weight: bold;
-    color: red;
-    padding: 1.2rem 0;
+    background-color: #ff1f35;
+    color: #fff;
+    padding: 0.8rem 0;
+    width: 100%;
+  }
+  .error-false {
+    visibility: hidden;
+  }
+
+  .error-true {
+    visibility: visible;
   }
 `;
