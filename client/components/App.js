@@ -7,6 +7,7 @@ import Loader from "./Loader";
 
 const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
+const Profile = lazy(() => import("./Profile"));
 
 // Axios configuration
 axios.defaults.baseURL =
@@ -104,7 +105,9 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <h1>Profile page</h1>
+                <Suspense fallback={<Loader />}>
+                  <Profile user={user} />
+                </Suspense>
               </Layout>
             );
           }}
