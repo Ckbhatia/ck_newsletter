@@ -64,6 +64,7 @@ const Register = (props) => {
               className="input"
               placeholder="Name"
               minLength="4"
+              value={name}
               onChange={(e) => updateName(e.target.value)}
             />
             <input
@@ -73,6 +74,7 @@ const Register = (props) => {
               className="input"
               placeholder="Username"
               minLength="4"
+              value={username}
               onChange={(e) => updateUsername(e.target.value)}
             />
             <input
@@ -82,6 +84,7 @@ const Register = (props) => {
               className="input"
               placeholder="Email"
               minLength="12"
+              value={email}
               onChange={(e) => updateEmail(e.target.value)}
             />
             <input
@@ -91,6 +94,7 @@ const Register = (props) => {
               className="input"
               placeholder="Password"
               minLength="6"
+              value={password}
               onChange={(e) => updatePassword(e.target.value)}
             />
             <input className="submit-btn" type="submit" value="Register" />

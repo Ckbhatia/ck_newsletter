@@ -63,6 +63,7 @@ const Login = (props) => {
               className="input"
               placeholder="Email"
               minLength="12"
+              value={email}
               onChange={(e) => updateEmail(e.target.value)}
             />
             <input
@@ -72,6 +73,7 @@ const Login = (props) => {
               className="input"
               placeholder="Password"
               minLength="6"
+              value={password}
               onChange={(e) => updatePassword(e.target.value)}
             />
             <input className="submit-btn" type="submit" value="Log in" />
