@@ -75,6 +75,7 @@ const App = (props) => {
 
   const handleLogout = () => {
     updateUser(null);
+    updateProjects(null);
     localStorage.clear();
   };
 
@@ -140,7 +141,10 @@ const App = (props) => {
             return (
               <Layout>
                 <Suspense fallback={<Loader />}>
-                  <Login updateUser={updateUser} />
+                  <Login
+                    updateUser={updateUser}
+                    fetchProjects={fetchProjects}
+                  />
                 </Suspense>
               </Layout>
             );
