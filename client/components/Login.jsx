@@ -26,6 +26,8 @@ const Login = (props) => {
       if (status === 200) {
         // Set the user
         await props.updateUser(data.data);
+        // Fetch projects
+        await props.fetchProjects(data.token);
         if (data.token) {
           localStorage.setItem("userToken", JSON.stringify(data.token));
         }
