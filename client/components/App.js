@@ -8,6 +8,7 @@ import Loader from "./Loader";
 const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
 const Profile = lazy(() => import("./Profile"));
+const Dashboard = lazy(() => import("./Dashboard"));
 
 // Axios configuration
 axios.defaults.baseURL =
@@ -85,7 +86,9 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <h1>Dashboard page</h1>
+                <Suspense fallback={<Loader />}>
+                  <Dashboard projects={projects} />
+                </Suspense>
               </Layout>
             );
           }}
