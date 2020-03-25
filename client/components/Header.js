@@ -8,7 +8,7 @@ export default function Header() {
 
   return (
     <HeaderElement className="header-main-container">
-      <div className="header-container flex-between">
+      <div className="header-container flex-between wrapper">
         <div className="heading-container">
           {user ? (
             <Link to="/dashboard">
@@ -64,11 +64,10 @@ export default function Header() {
 }
 
 const HeaderElement = styled.header`
-  height: 10vh;
+  min-height: 10vh;
   background-color: #40b9ff;
   .header-container {
-    height: 4.5rem;
-    margin: 0 6.2rem;
+    min-height: 4.5rem;
     .heading-container {
       margin: 0.2rem 0;
     }
@@ -86,7 +85,7 @@ const HeaderElement = styled.header`
   .header-navigation-container {
     .nav-item {
       display: inline-block;
-      margin: 0 1rem;
+      margin-left: 1rem;
     }
     .nav-text {
       font-size: 1.2rem;
