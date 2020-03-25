@@ -9,6 +9,7 @@ const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
 const Profile = lazy(() => import("./Profile"));
 const Dashboard = lazy(() => import("./Dashboard"));
+const PageNotFound = lazy(() => import("./PageNotFound"));
 
 // Axios configuration
 axios.defaults.baseURL =
@@ -116,6 +117,18 @@ const App = (props) => {
             );
           }}
         />
+        <Route
+          path="*"
+          render={() => {
+            return (
+              <Layout>
+                <Suspense fallback={<Loader />}>
+                  <PageNotFound homeLink={"/dashboard"} />
+                </Suspense>
+              </Layout>
+            );
+          }}
+        />
       </Switch>
     );
   };
@@ -157,6 +170,18 @@ const App = (props) => {
               <Layout>
                 <Suspense fallback={<Loader />}>
                   <Register />
+                </Suspense>
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="*"
+          render={() => {
+            return (
+              <Layout>
+                <Suspense fallback={<Loader />}>
+                  <PageNotFound homeLink={"/"} />
                 </Suspense>
               </Layout>
             );
