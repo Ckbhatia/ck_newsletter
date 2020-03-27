@@ -9,6 +9,7 @@ const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
 const Profile = lazy(() => import("./Profile"));
 const Dashboard = lazy(() => import("./Dashboard"));
+const Project = lazy(() => import("./Project"));
 const PageNotFound = lazy(() => import("./PageNotFound"));
 
 // Axios configuration
@@ -20,6 +21,7 @@ axios.defaults.baseURL =
 const App = (props) => {
   const [user, updateUser] = useState(null);
   const [projects, updateProjects] = useState(null);
+  const [projectData, updateProjectData] = useState(null);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
@@ -80,6 +82,11 @@ const App = (props) => {
     localStorage.clear();
   };
 
+  const getSelectedProject = async (id) => {
+    const project = await projects.filter((project) => project._id === id);
+    updateProjectData(project[0]);
+  };
+
   const privateRoutes = () => {
     return (
       <Switch>
@@ -96,11 +103,17 @@ const App = (props) => {
           }}
         />
         <Route
+          exact
           path="/project/:id"
           render={() => {
             return (
               <Layout>
-                <h1>Project page</h1>
+                <Suspense fallback={<Loader />}>
+                  <Project
+                    projectData={projectData}
+                    getSelectedProject={getSelectedProject}
+                  />
+                </Suspense>
               </Layout>
             );
           }}
