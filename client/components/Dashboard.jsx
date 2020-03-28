@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Container } from "@material-ui/core";
 import ListProject from "./ListProject";
 
-export default function Dashboard({ projects }) {
+export default function Dashboard({ projects, error }) {
   return (
     <Div className="dashboard-main-container">
       <Container maxWidth="md">
@@ -17,10 +17,17 @@ export default function Dashboard({ projects }) {
               New
             </Link>
           </div>
+          <div
+            className={`msg-container error-${
+              error && error.action === "deleteProject" ? "true" : "false"
+            }`}
+          >
+            <span className="msg-text">{error && error.msg}</span>
+          </div>
         </div>
         <div className="projects-main-container">
           <div className="projects-container">
-            {projects.length > 0 ? (
+            {projects && projects.length > 0 ? (
               <ul className="projects-list">
                 {projects.map((project) => {
                   return (
@@ -70,6 +77,30 @@ let Div = styled.div`
       }
     }
   }
+
+  .msg-container {
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    background-color: #ff1f35;
+    padding: 0.8rem 0;
+    margin: 0.5rem 0;
+  }
+
+  .msg-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    width: 100%;
+  }
+
+  .error-false {
+    visibility: hidden;
+  }
+  .error-true {
+    visibility: visible;
+  }
+
   .project-item {
     margin: 2rem 0;
   }
