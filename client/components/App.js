@@ -22,6 +22,7 @@ const App = (props) => {
   const [user, updateUser] = useState(null);
   const [projects, updateProjects] = useState(null);
   const [projectData, updateProjectData] = useState(null);
+  const [error, updateError] = useState(null);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
@@ -87,6 +88,49 @@ const App = (props) => {
     updateProjectData(project[0]);
   };
 
+  const deleteProject = async (id) => {
+    // Take a snapshot of projects state before updating
+    const projectsSnapshotBeforeUpdate = projects;
+
+    const newProjects = await projects.filter((project) => project._id !== id);
+    // Pre update projects
+    updateProjects(newProjects);
+    // Push to the dashboard
+    props.history.push("/dashboard");
+
+    const token = JSON.parse(localStorage.getItem("userToken"));
+
+    try {
+      const { status } = await axios.delete(`/projects/${id}`, {
+        headers: {
+          Authorization: token
+        }
+      });
+      if (status === 200) {
+        // Retain the pre update
+      } else {
+        // Revert back the changes
+        updateProjects(projectsSnapshotBeforeUpdate);
+        updateError({
+          action: "deleteProject",
+          msg: "Failed to delete the project"
+        });
+        // Re-update the error
+        setTimeout(() => updateError(null), 3000);
+      }
+    } catch (err) {
+      // Revert back the changes
+      updateProjects(projectsSnapshotBeforeUpdate);
+      // Update the error
+      updateError({
+        action: "deleteProject",
+        msg: "Failed to delete the project"
+      });
+      // Re-update the error
+      setTimeout(() => updateError(null), 3000);
+    }
+  };
+
   const privateRoutes = () => {
     return (
       <Switch>
@@ -96,7 +140,7 @@ const App = (props) => {
             return (
               <Layout>
                 <Suspense fallback={<Loader />}>
-                  <Dashboard projects={projects} />
+                  <Dashboard projects={projects} error={error} />
                 </Suspense>
               </Layout>
             );
@@ -111,6 +155,7 @@ const App = (props) => {
                 <Suspense fallback={<Loader />}>
                   <Project
                     projectData={projectData}
+                    deleteProject={deleteProject}
                     getSelectedProject={getSelectedProject}
                   />
                 </Suspense>
