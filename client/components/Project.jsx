@@ -4,7 +4,7 @@ import { Container } from "@material-ui/core";
 import styled from "styled-components";
 import Table from "./Table";
 
-const Project = ({ match, getSelectedProject, projectData }) => {
+const Project = ({ match, getSelectedProject, projectData, deleteProject }) => {
   useEffect(() => {
     const id = match.params.id;
     getSelectedProject(id);
@@ -26,7 +26,12 @@ const Project = ({ match, getSelectedProject, projectData }) => {
           >
             Edit
           </Link>
-          <button className="project-btn btn-delete">Delete</button>
+          <button
+            onClick={() => deleteProject(projectData._id)}
+            className="project-btn btn-delete"
+          >
+            Delete
+          </button>
         </div>
       </Container>
     </Div>
