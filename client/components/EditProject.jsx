@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { Container } from "@material-ui/core";
@@ -6,8 +6,21 @@ import axios from "axios";
 import ProjectForm from "./ProjectForm";
 
 // This component works for both, create project and edit project.
-function EditProject({ fetchProjects, history }) {
+function EditProject({
+  fetchProjects,
+  projectData,
+  getSelectedProject,
+  history,
+  match
+}) {
   const [status, updateStatus] = useState(null);
+
+  useEffect(() => {
+    if (getSelectedProject) {
+      const id = match.params.id;
+      getSelectedProject(id);
+    }
+  }, []);
 
   const handleSubmit = async (
     name,
@@ -34,7 +47,7 @@ function EditProject({ fetchProjects, history }) {
       );
       if (status === 201) {
         updateStatus({ currentStatus: true, msg: "Created project" });
-        await fetchProjects(JSON.parse(localStorage.getItem("userToken")));
+        await fetchProjects(token);
         setTimeout(() => history.push("/dashboard"), 700);
       } else {
         await updateStatus({ currentStatus: false, msg: "There's an error" });
@@ -43,7 +56,50 @@ function EditProject({ fetchProjects, history }) {
     } catch (err) {
       await updateStatus({
         currentStatus: false,
-        msg: "Project name or site url are duplicate"
+        msg: "Project name or site url is duplicate"
+      });
+      setTimeout(() => updateStatus(null), 3000);
+    }
+  };
+
+  const handleEdit = async (
+    name,
+    siteUrl,
+    isCustomTemplate,
+    customTemplateData
+  ) => {
+    const token = JSON.parse(localStorage.getItem("userToken"));
+
+    try {
+      const id = match.params.id;
+
+      const { status } = await axios.patch(
+        `/projects/${id}`,
+        {
+          name,
+          siteUrl,
+          isCustomTemplate,
+          customTemplateData
+        },
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      );
+
+      if (status === 200) {
+        updateStatus({ currentStatus: true, msg: "Updated project" });
+        await fetchProjects(token);
+        setTimeout(() => history.push("/dashboard"), 700);
+      } else {
+        await updateStatus({ currentStatus: false, msg: "There's an error" });
+        setTimeout(() => updateStatus(null), 3000);
+      }
+    } catch (err) {
+      await updateStatus({
+        currentStatus: false,
+        msg: "Project name or site url is duplicate"
       });
       setTimeout(() => updateStatus(null), 3000);
     }
@@ -63,7 +119,10 @@ function EditProject({ fetchProjects, history }) {
             )}
           </div>
           <div className="form-main-container">
-            <ProjectForm handleSubmit={handleSubmit} />
+            <ProjectForm
+              handleSubmit={match.params.id ? handleEdit : handleSubmit}
+              projectData={projectData}
+            />
           </div>
         </Div>
       </Container>
