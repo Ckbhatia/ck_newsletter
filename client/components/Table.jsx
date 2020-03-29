@@ -69,19 +69,36 @@ export default function Table({ projectData }) {
       apiKey,
       subscribers,
       slugs,
+      isCustomTemplate,
+      customTemplateData,
       updatedAt,
       createdAt
     } = projectData;
 
-    rows = [
-      createData("Project Name", name),
-      createData("Site URL", siteUrl),
-      createData("Last update", simplifyDate(updatedAt)),
-      createData("API Key", apiKey),
-      createData("Subscribers", addCommas(subscribers)),
-      createData("Slugs", addCommas(slugs)),
-      createData("Created", simplifyDate(createdAt))
-    ];
+    if (isCustomTemplate === "true") {
+      rows = [
+        createData("Project Name", name),
+        createData("Site URL", siteUrl),
+        createData("Last update", simplifyDate(updatedAt)),
+        createData("API Key", apiKey),
+        createData("Subscribers", addCommas(subscribers)),
+        createData("Slugs", addCommas(slugs)),
+        createData("isCustomTemplate", isCustomTemplate),
+        createData("customTemplateData", customTemplateData),
+        createData("Created", simplifyDate(createdAt))
+      ];
+    } else {
+      rows = [
+        createData("Project Name", name),
+        createData("Site URL", siteUrl),
+        createData("Last update", simplifyDate(updatedAt)),
+        createData("API Key", apiKey),
+        createData("Subscribers", addCommas(subscribers)),
+        createData("Slugs", addCommas(slugs)),
+        createData("isCustomTemplate", isCustomTemplate),
+        createData("Created", simplifyDate(createdAt))
+      ];
+    }
   }
   return (
     <Div className="table-main-container">
