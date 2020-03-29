@@ -10,6 +10,7 @@ const Register = lazy(() => import("./Register"));
 const Profile = lazy(() => import("./Profile"));
 const Dashboard = lazy(() => import("./Dashboard"));
 const Project = lazy(() => import("./Project"));
+const EditProject = lazy(() => import("./EditProject"));
 const PageNotFound = lazy(() => import("./PageNotFound"));
 
 // Axios configuration
@@ -170,6 +171,18 @@ const App = (props) => {
               <Layout>
                 <Suspense fallback={<Loader />}>
                   <Profile user={user} />
+                </Suspense>
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/projects/create"
+          render={() => {
+            return (
+              <Layout>
+                <Suspense fallback={<Loader />}>
+                  <EditProject fetchProjects={fetchProjects} />
                 </Suspense>
               </Layout>
             );
