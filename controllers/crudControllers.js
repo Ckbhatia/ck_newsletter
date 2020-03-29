@@ -70,7 +70,15 @@ const getMany = (model) => async (req, res) => {
 };
 
 const createOne = (model, reqType) => async (req, res) => {
-  const { name, siteUrl, email, username, password } = req.body;
+  const {
+    name,
+    siteUrl,
+    isCustomTemplate,
+    customTemplateData,
+    email,
+    username,
+    password
+  } = req.body;
 
   // Request body data validations
   if (reqType === "createProject") {
@@ -106,16 +114,29 @@ const createOne = (model, reqType) => async (req, res) => {
       }
     }
 
+    // Generate unique api key
+    const apiKey =
+      Date.now() +
+      Math.random()
+        .toString(36)
+        .substring(2, 15);
+
     const doc = await model.create({
       name,
       siteUrl,
       email,
+      apiKey,
       username,
       password
     });
 
     // Create project: put author in project and push project Id to user
     if (reqType === "createProject") {
+      // Check isCustomTemplate if true save customTemplateData
+      if (isCustomTemplate) {
+        doc.isCustomTemplate = isCustomTemplate;
+        doc.customTemplateData = customTemplateData;
+      }
       doc.author = req.user.username;
       await doc.save();
 
