@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Switch from "@material-ui/core/Switch";
 
-export default function ProjectForm({ handleSubmit }) {
+export default function ProjectForm({ handleSubmit, projectData }) {
   const [name, updateName] = useState("");
   const [siteUrl, updateSiteUrl] = useState("");
   const [isCustomTemplate, updateCustomTemplate] = useState(false);
   const [customTemplateData, updatecustomTemplateData] = useState("");
+
+  useEffect(() => {
+    if (projectData) {
+      const {
+        name,
+        siteUrl,
+        isCustomTemplate,
+        customTemplateData
+      } = projectData;
+      updateName(name);
+      updateSiteUrl(siteUrl);
+      const value = isCustomTemplate === "true" ? true : false;
+      updateCustomTemplate(value);
+      updatecustomTemplateData(customTemplateData);
+    }
+  }, []);
 
   return (
     <FormContainer className="form-container flex-center">
@@ -58,8 +74,9 @@ export default function ProjectForm({ handleSubmit }) {
             type="textarea"
             name="custom template"
             className="input"
-            placeholder="paste your custom template here"
+            placeholder="paste your custom template here ( HTML )"
             value={customTemplateData}
+            required
             onChange={(e) => updatecustomTemplateData(e.target.value)}
           ></textarea>
         )}
