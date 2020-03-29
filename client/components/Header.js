@@ -64,7 +64,8 @@ export default function Header() {
 }
 
 const HeaderElement = styled.header`
-  min-height: 10vh;
+  min-height: 5vh;
+  max-height: 10vh;
   background-color: #40b9ff;
   .header-container {
     min-height: 4.5rem;
