@@ -24,6 +24,7 @@ const App = (props) => {
   const [projects, updateProjects] = useState(null);
   const [projectData, updateProjectData] = useState(null);
   const [error, updateError] = useState(null);
+  const [isFetchingUser, updateFetchingUser] = useState(false);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
@@ -34,6 +35,8 @@ const App = (props) => {
   }, []);
 
   const fetchUser = async (token) => {
+    // Update fetchingUser
+    updateFetchingUser(true);
     try {
       const { data, status } = await axios.get("/users", {
         headers: {
@@ -41,6 +44,8 @@ const App = (props) => {
         }
       });
       if (status === 200) {
+        // Update fetchingUser
+        updateFetchingUser(false);
         // Set the user
         await updateUser(data.user);
       } else {
@@ -280,7 +285,7 @@ const App = (props) => {
 
   return (
     <Context.Provider value={{ user, projects, handleLogout }}>
-      {user ? privateRoutes() : publicRoutes()}
+      {isFetchingUser || user ? privateRoutes() : publicRoutes()}
     </Context.Provider>
   );
 };
