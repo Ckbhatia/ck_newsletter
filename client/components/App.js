@@ -189,6 +189,22 @@ const App = (props) => {
           }}
         />
         <Route
+          path="/project/:id/edit"
+          render={() => {
+            return (
+              <Layout>
+                <Suspense fallback={<Loader />}>
+                  <EditProject
+                    fetchProjects={fetchProjects}
+                    projectData={projectData}
+                    getSelectedProject={getSelectedProject}
+                  />
+                </Suspense>
+              </Layout>
+            );
+          }}
+        />
+        <Route
           path="*"
           render={() => {
             return (
