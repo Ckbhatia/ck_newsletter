@@ -10,45 +10,47 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: { loader: "babel-loader" }
+        use: { loader: "babel-loader" },
       },
       {
         test: /\.(scss|css)$/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
           {
-            loader: "css-loader"
+            loader: "css-loader",
           },
-          { loader: "sass-loader" }
-        ]
+          { loader: "sass-loader" },
+        ],
       },
       {
         test: /\.(png|jpg|gif)$/,
         use: [
           {
             loader: "file-loader",
-            options: {}
-          }
-        ]
-      }
-    ]
+            options: {},
+          },
+        ],
+      },
+    ],
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: [".js", ".jsx"],
   },
   output: {
     filename: "bundle.js",
     path: `${__dirname}/dist/bundle/`,
-    publicPath: "/static/"
+    publicPath: "/static/",
   },
   plugins: [
     new DefinePlugin({
+      __DEV__: false,
+      __PROD__: true,
       "process.env": {
-        NODE_ENV: JSON.stringify("production")
-      }
+        NODE_ENV: JSON.stringify("production"),
+      },
     }),
     new MiniCssExtractPlugin({
-      filename: "bundle.css"
-    })
-  ]
+      filename: "bundle.css",
+    }),
+  ],
 };
