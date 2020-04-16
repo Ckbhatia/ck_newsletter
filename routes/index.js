@@ -4,11 +4,11 @@ const router = require("express").Router();
 router.get("*", function (req, res) {
   const cssPath =
     process.env.NODE_ENV == "production"
-      ? `/bundle/bundle.css`
+      ? `/dist/bundle/bundle.css`
       : "/static/bundle.css";
   const jsPath =
     process.env.NODE_ENV == "production"
-      ? `/bundle/bundle.js`
+      ? `/dist/bundle/bundle.js`
       : "/static/bundle.js";
   res.render("index", {
     title: "Ck newsletter | Automate it",
