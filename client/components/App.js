@@ -4,6 +4,7 @@ import axios from "axios";
 import Context from "./Context";
 import Layout from "./Layout";
 import Loader from "./Loader";
+import config from "../config";
 
 const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
@@ -40,8 +41,8 @@ const App = (props) => {
     try {
       const { data, status } = await axios.get("/users", {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
       if (status === 200) {
         // Update fetchingUser
@@ -64,8 +65,8 @@ const App = (props) => {
     try {
       const { data, status } = await axios.get("/projects", {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
       if (status === 200) {
         // Set the user
@@ -109,8 +110,8 @@ const App = (props) => {
     try {
       const { status } = await axios.delete(`/projects/${id}`, {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
       if (status === 200) {
         // Retain the pre update
@@ -119,7 +120,7 @@ const App = (props) => {
         updateProjects(projectsSnapshotBeforeUpdate);
         updateError({
           action: "deleteProject",
-          msg: "Failed to delete the project"
+          msg: "Failed to delete the project",
         });
         // Re-update the error
         setTimeout(() => updateError(null), 3000);
@@ -130,7 +131,7 @@ const App = (props) => {
       // Update the error
       updateError({
         action: "deleteProject",
-        msg: "Failed to delete the project"
+        msg: "Failed to delete the project",
       });
       // Re-update the error
       setTimeout(() => updateError(null), 3000);
@@ -144,11 +145,11 @@ const App = (props) => {
           path="/dashboard"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <Dashboard projects={projects} error={error} />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -157,15 +158,15 @@ const App = (props) => {
           path="/project/:id"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <Project
                     projectData={projectData}
                     deleteProject={deleteProject}
                     getSelectedProject={getSelectedProject}
                   />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -173,11 +174,11 @@ const App = (props) => {
           path="/account/profile"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <Profile user={user} />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -185,11 +186,11 @@ const App = (props) => {
           path="/projects/create"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <EditProject fetchProjects={fetchProjects} />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -197,15 +198,15 @@ const App = (props) => {
           path="/project/:id/edit"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <EditProject
                     fetchProjects={fetchProjects}
                     projectData={projectData}
                     getSelectedProject={getSelectedProject}
                   />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -213,11 +214,11 @@ const App = (props) => {
           path="*"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <PageNotFound homeLink={"/dashboard"} />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -244,14 +245,14 @@ const App = (props) => {
           path="/login"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <Login
                     updateUser={updateUser}
                     fetchProjects={fetchProjects}
                   />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -259,11 +260,11 @@ const App = (props) => {
           path="/register"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <Register />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
@@ -271,11 +272,11 @@ const App = (props) => {
           path="*"
           render={() => {
             return (
-              <Layout>
-                <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader />}>
+                <Layout>
                   <PageNotFound homeLink={"/"} />
-                </Suspense>
-              </Layout>
+                </Layout>
+              </Suspense>
             );
           }}
         />
