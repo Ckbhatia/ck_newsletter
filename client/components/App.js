@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import axios from "axios";
 import Context from "./Context";
@@ -6,13 +6,13 @@ import Layout from "./Layout";
 import Loader from "./Loader";
 import config from "../config";
 
-const Login = lazy(() => import("./Login"));
-const Register = lazy(() => import("./Register"));
-const Profile = lazy(() => import("./Profile"));
-const Dashboard = lazy(() => import("./Dashboard"));
-const Project = lazy(() => import("./Project"));
-const EditProject = lazy(() => import("./EditProject"));
-const PageNotFound = lazy(() => import("./PageNotFound"));
+import Login from "./Login";
+import Register from "./Register";
+import Profile from "./Profile";
+import Dashboard from "./Dashboard";
+import Project from "./Project";
+import EditProject from "./EditProject";
+import PageNotFound from "./PageNotFound";
 
 // Axios configuration
 axios.defaults.baseURL =
@@ -146,9 +146,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <Dashboard projects={projects} error={error} />
-                </Suspense>
+                <Dashboard projects={projects} error={error} />
               </Layout>
             );
           }}
@@ -159,13 +157,11 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <Project
-                    projectData={projectData}
-                    deleteProject={deleteProject}
-                    getSelectedProject={getSelectedProject}
-                  />
-                </Suspense>
+                <Project
+                  projectData={projectData}
+                  deleteProject={deleteProject}
+                  getSelectedProject={getSelectedProject}
+                />
               </Layout>
             );
           }}
@@ -175,9 +171,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <Profile user={user} />
-                </Suspense>
+                <Profile user={user} />
               </Layout>
             );
           }}
@@ -187,9 +181,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <EditProject fetchProjects={fetchProjects} />
-                </Suspense>
+                <EditProject fetchProjects={fetchProjects} />
               </Layout>
             );
           }}
@@ -199,13 +191,11 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <EditProject
-                    fetchProjects={fetchProjects}
-                    projectData={projectData}
-                    getSelectedProject={getSelectedProject}
-                  />
-                </Suspense>
+                <EditProject
+                  fetchProjects={fetchProjects}
+                  projectData={projectData}
+                  getSelectedProject={getSelectedProject}
+                />
               </Layout>
             );
           }}
@@ -215,9 +205,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <PageNotFound homeLink={"/dashboard"} />
-                </Suspense>
+                <PageNotFound homeLink={"/dashboard"} />
               </Layout>
             );
           }}
@@ -246,12 +234,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <Login
-                    updateUser={updateUser}
-                    fetchProjects={fetchProjects}
-                  />
-                </Suspense>
+                <Login updateUser={updateUser} fetchProjects={fetchProjects} />
               </Layout>
             );
           }}
@@ -261,9 +244,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <Register />
-                </Suspense>
+                <Register />
               </Layout>
             );
           }}
@@ -273,9 +254,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <Suspense fallback={<Loader />}>
-                  <PageNotFound homeLink={"/"} />
-                </Suspense>
+                <PageNotFound homeLink={"/"} />
               </Layout>
             );
           }}
