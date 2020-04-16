@@ -4,6 +4,7 @@ import axios from "axios";
 import Context from "./Context";
 import Layout from "./Layout";
 import Loader from "./Loader";
+import config from "../config";
 
 const Login = lazy(() => import("./Login"));
 const Register = lazy(() => import("./Register"));
@@ -40,8 +41,8 @@ const App = (props) => {
     try {
       const { data, status } = await axios.get("/users", {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
       if (status === 200) {
         // Update fetchingUser
@@ -64,8 +65,8 @@ const App = (props) => {
     try {
       const { data, status } = await axios.get("/projects", {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
       if (status === 200) {
         // Set the user
@@ -109,8 +110,8 @@ const App = (props) => {
     try {
       const { status } = await axios.delete(`/projects/${id}`, {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
       if (status === 200) {
         // Retain the pre update
@@ -119,7 +120,7 @@ const App = (props) => {
         updateProjects(projectsSnapshotBeforeUpdate);
         updateError({
           action: "deleteProject",
-          msg: "Failed to delete the project"
+          msg: "Failed to delete the project",
         });
         // Re-update the error
         setTimeout(() => updateError(null), 3000);
@@ -130,7 +131,7 @@ const App = (props) => {
       // Update the error
       updateError({
         action: "deleteProject",
-        msg: "Failed to delete the project"
+        msg: "Failed to delete the project",
       });
       // Re-update the error
       setTimeout(() => updateError(null), 3000);
