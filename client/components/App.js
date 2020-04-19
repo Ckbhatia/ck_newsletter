@@ -6,6 +6,7 @@ import Layout from "./Layout";
 import Loader from "./Loader";
 import config from "../config";
 
+import Landing from "./Landing";
 import Login from "./Login";
 import Register from "./Register";
 import Profile from "./Profile";
@@ -223,7 +224,7 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <h1>Landing page</h1>
+                <Landing />
               </Layout>
             );
           }}
