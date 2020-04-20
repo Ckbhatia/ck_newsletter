@@ -393,6 +393,9 @@ export default function Landing() {
           <h1 className="main-heading-text">
             Keep your subscribers <br /> in sync
           </h1>
+          <p className="main-text-para">
+            Autopilot the newsletters for bloggers with one time <br /> setup.
+          </p>
           <div className="link-container">
             <Link to="/docs" className="link">
               Read docs
@@ -428,6 +431,13 @@ const Div = styled.div`
     font-weight: 700;
     line-height: 65px;
     color: #232129;
+  }
+  .main-text-para {
+    font-weight: 400;
+    color: #78757a;
+    font-size: 1.45rem;
+    line-height: 1.4;
+    margin: 1.5rem 0;
   }
   .link-container {
     margin-top: 2rem;
