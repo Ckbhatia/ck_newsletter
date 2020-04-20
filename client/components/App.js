@@ -14,6 +14,7 @@ import Dashboard from "./Dashboard";
 import Project from "./Project";
 import EditProject from "./EditProject";
 import PageNotFound from "./PageNotFound";
+import Docs from "./Docs";
 
 // Axios configuration
 axios.defaults.baseURL =
@@ -153,6 +154,16 @@ const App = (props) => {
           }}
         />
         <Route
+          path="/docs"
+          render={() => {
+            return (
+              <Layout>
+                <Docs />
+              </Layout>
+            );
+          }}
+        />
+        <Route
           exact
           path="/project/:id"
           render={() => {
@@ -229,7 +240,16 @@ const App = (props) => {
             );
           }}
         />
-
+        <Route
+          path="/docs"
+          render={() => {
+            return (
+              <Layout>
+                <Docs />
+              </Layout>
+            );
+          }}
+        />
         <Route
           path="/login"
           render={() => {
