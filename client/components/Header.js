@@ -26,6 +26,11 @@ export default function Header() {
               {user ? (
                 <>
                   <li className="nav-item">
+                    <Link to="/docs">
+                      <span className="docs-text nav-text">Docs</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
                     <Link to="/account/profile">
                       <span className="profile-text nav-text">Profile</span>
                     </Link>
@@ -43,6 +48,11 @@ export default function Header() {
                 </>
               ) : (
                 <>
+                  <li className="nav-item">
+                    <Link to="/docs">
+                      <span className="docs-text nav-text">Docs</span>
+                    </Link>
+                  </li>
                   <li className="nav-item">
                     <Link to="/login">
                       <span className="login-text nav-text">Log in</span>
