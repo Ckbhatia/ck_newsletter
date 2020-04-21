@@ -15,28 +15,30 @@ export default function Profile(props) {
   const [isSuccess, updateSuccess] = useState(false);
 
   useEffect(() => {
-    const {
-      name,
-      username,
-      email,
-      emailCredential,
-      passCredential,
-      emailService
-    } = props.user;
-    updateName(name);
-    updateEmail(email);
-    updateUsername(username);
-    // Only updates if these were filled before
-    if (emailService) {
-      updateEmailService(emailService);
+    if (props.user) {
+      const {
+        name,
+        username,
+        email,
+        emailCredential,
+        passCredential,
+        emailService,
+      } = props.user;
+      updateName(name);
+      updateEmail(email);
+      updateUsername(username);
+      // Only updates if these were filled before
+      if (emailService) {
+        updateEmailService(emailService);
+      }
+      if (emailCredential) {
+        updateEmailCred(emailCredential);
+      }
+      if (passCredential) {
+        updatePasswordCred(passCredential);
+      }
     }
-    if (emailCredential) {
-      updateEmailCred(emailCredential);
-    }
-    if (passCredential) {
-      updatePasswordCred(passCredential);
-    }
-  }, []);
+  }, [props.user]);
 
   const optionArr = [
     "gmail",
@@ -50,7 +52,7 @@ export default function Profile(props) {
     "fastmail",
     "icloud",
     "mailjet",
-    "aol"
+    "aol",
   ];
 
   const handleSubmit = async (e) => {
@@ -68,12 +70,12 @@ export default function Profile(props) {
           password,
           emailCredential,
           passCredential,
-          emailService
+          emailService,
         },
         {
           headers: {
-            Authorization: token
-          }
+            Authorization: token,
+          },
         }
       );
       if (status === 200) {
