@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import styled from "styled-components";
 import Table from "./Table";
 
-const Project = ({ match, getSelectedProject, projectData, deleteProject }) => {
+const Project = ({
+  projects,
+  match,
+  getSelectedProject,
+  projectData,
+  deleteProject,
+}) => {
   useEffect(() => {
     const id = match.params.id;
     getSelectedProject(id);
-  }, []);
+  }, [projects]);
 
   return (
     <Div className="project-main-container">
