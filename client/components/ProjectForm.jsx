@@ -14,7 +14,7 @@ export default function ProjectForm({ handleSubmit, projectData }) {
         name,
         siteUrl,
         isCustomTemplate,
-        customTemplateData
+        customTemplateData,
       } = projectData;
       updateName(name);
       updateSiteUrl(siteUrl);
@@ -22,7 +22,7 @@ export default function ProjectForm({ handleSubmit, projectData }) {
       updateCustomTemplate(value);
       updatecustomTemplateData(customTemplateData);
     }
-  }, []);
+  }, [projectData]);
 
   return (
     <FormContainer className="form-container flex-center">
