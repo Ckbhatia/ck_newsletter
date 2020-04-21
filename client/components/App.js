@@ -93,8 +93,10 @@ const App = (props) => {
   };
 
   const getSelectedProject = async (id) => {
-    const project = await projects.filter((project) => project._id === id);
-    updateProjectData(project[0]);
+    if (projects) {
+      const project = await projects.filter((project) => project._id === id);
+      updateProjectData(project[0]);
+    }
   };
 
   const deleteProject = async (id) => {
