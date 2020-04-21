@@ -172,6 +172,7 @@ const App = (props) => {
             return (
               <Layout>
                 <Project
+                  projects={projects}
                   projectData={projectData}
                   deleteProject={deleteProject}
                   getSelectedProject={getSelectedProject}
@@ -206,6 +207,7 @@ const App = (props) => {
             return (
               <Layout>
                 <EditProject
+                  projects={projects}
                   fetchProjects={fetchProjects}
                   projectData={projectData}
                   getSelectedProject={getSelectedProject}
