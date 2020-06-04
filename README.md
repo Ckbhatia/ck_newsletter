@@ -1,4 +1,9 @@
-# Ck newsletter - A newsletter service
+<p align="center">
+  <h1> 
+   <img src="https://i.ibb.co/C5zTRC8/logo-via-logohub.png" alt="ck newsletter" width="20%">
+   - A newsletter service 
+  </h1>
+</p>
 
 [![Github](https://img.shields.io/github/stars/ckbhatia/ck_newsletter?style=social)]
 
