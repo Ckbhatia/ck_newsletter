@@ -8,7 +8,7 @@ const expressStaticGzip = require("express-static-gzip");
 const cors = require("cors");
 
 const corsOptions = {
-  origin: "cknewsletter.tech",
+  origin: "https://cknewsletter.tech",
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
