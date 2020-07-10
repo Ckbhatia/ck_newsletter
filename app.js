@@ -7,6 +7,11 @@ const mongoose = require("mongoose");
 const expressStaticGzip = require("express-static-gzip");
 const cors = require("cors");
 
+const corsOptions = {
+  origin: "cknewsletter.tech",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const projectsRouter = require("./routes/projects");
@@ -43,9 +48,9 @@ app.use(
   expressStaticGzip(path.join(__dirname, "dist/bundle"), {
     enableBrotli: true,
     orderPreference: ["br", "gz"],
-    setHeaders: function(res, path) {
+    setHeaders: function (res, path) {
       res.setHeader("Cache-Control", "public, max-age=31536000");
-    }
+    },
   })
 );
 
@@ -58,7 +63,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(
     require("webpack-dev-middleware")(compiler, {
       noInfo: true,
-      publicPath: webpackConfig.output.publicPath
+      publicPath: webpackConfig.output.publicPath,
     })
   );
 
@@ -71,23 +76,23 @@ if (process.env.NODE_ENV === "development") {
   app.use(
     require("webpack-dev-middleware")(compiler, {
       noInfo: true,
-      publicPath: webpackConfig.output.publicPath
+      publicPath: webpackConfig.output.publicPath,
     })
   );
 }
 
 app.use("/api/v1/projects", cors(), projectsRouter);
-app.use("/users", usersRouter);
-app.use("/projects", projectsRouter);
-app.use("/", indexRouter);
+app.use("/users", cors(corsOptions), usersRouter);
+app.use("/projects", cors(corsOptions), projectsRouter);
+app.use("/", cors(corsOptions), indexRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
