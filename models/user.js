@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
 
 // Validate email function
-var validateEmail = function(email) {
+var validateEmail = function (email) {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   return re.test(email);
 };
@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema(
         "Please fill a valid email address"
       ]
     },
-    password: { type: String, required: true, min: 6 },
+    password: { type: String, required: false, min: 6 },
     emailCredential: {
       type: String,
       trim: true,
@@ -61,7 +61,7 @@ const userSchema = mongoose.Schema(
 );
 
 // Hash the password
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function (next) {
   if (this.password) {
     var salt = bcrypt.genSaltSync(10);
     this.password = bcrypt.hashSync(this.password, salt);
