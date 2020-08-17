@@ -15,6 +15,7 @@ const corsOptions = {
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const projectsRouter = require("./routes/projects");
+const socialLoginRouter = require("./routes/social_login");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
@@ -83,6 +84,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use("/api/v1/projects", cors(), projectsRouter);
 app.use("/users", cors(corsOptions), usersRouter);
+app.use("/auth", cors(corsOptions), socialLoginRouter);
 app.use("/projects", cors(corsOptions), projectsRouter);
 app.use("/", cors(corsOptions), indexRouter);
 
