@@ -83,8 +83,8 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use("/api/v1/projects", cors(), projectsRouter);
+app.use("/users/auth", cors(corsOptions), socialLoginRouter);
 app.use("/users", cors(corsOptions), usersRouter);
-app.use("/auth", cors(corsOptions), socialLoginRouter);
 app.use("/projects", cors(corsOptions), projectsRouter);
 app.use("/", cors(corsOptions), indexRouter);
 
