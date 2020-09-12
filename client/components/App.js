@@ -28,6 +28,7 @@ const App = (props) => {
   const [projectData, updateProjectData] = useState(null);
   const [error, updateError] = useState(null);
   const [isFetchingUser, updateFetchingUser] = useState(false);
+  const [isAuthenticated, updateAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
@@ -37,7 +38,7 @@ const App = (props) => {
     }
   }, []);
 
-  const fetchUser = async (token) => {
+  const fetchUser = async (token, redirect) => {
     // Update fetchingUser
     updateFetchingUser(true);
     try {
@@ -49,8 +50,10 @@ const App = (props) => {
       if (status === 200) {
         // Update fetchingUser
         updateFetchingUser(false);
+        updateAuthenticated(true);
         // Set the user
         await updateUser(data.user);
+        if (redirect) redirect("/dashboard")
       } else {
         // Clear the invalid tokens and redirect to the login
         localStorage.clear();
@@ -87,6 +90,9 @@ const App = (props) => {
   };
 
   const handleLogout = () => {
+    updateAuthenticated(false);
+    // Clear the token cookie
+    document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     updateUser(null);
     updateProjects(null);
     localStorage.clear();
@@ -289,8 +295,10 @@ const App = (props) => {
   };
 
   return (
-    <Context.Provider value={{ user, projects, handleLogout }}>
+    <Context.Provider value={{ isAuthenticated, user, fetchUser, projects, handleLogout }}>
       {isFetchingUser || user ? privateRoutes() : publicRoutes()}
+      {/* {isFetchingUser && <Layout><Loader /></Layout> || isAuthenticated ? privateRoutes() : publicRoutes()} */}
+      {/* {isAuthenticated ? privateRoutes() : publicRoutes()} */}
     </Context.Provider>
   );
 };
