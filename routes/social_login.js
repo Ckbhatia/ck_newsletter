@@ -16,7 +16,7 @@ router.use(passport.initialize());
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: `${rootUrl}/auth/github/callback`,
+  callbackURL: `${rootUrl}/users/auth/github/callback`,
 },
   async (accessToken, refreshToken, profile, callBack) => {
     User.findOne({ username: profile.username }).then(user => {
@@ -47,7 +47,7 @@ passport.use(new GitHubStrategy({
 passport.use(new googleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: `${rootUrl}/auth/google/callback`,
+  callbackURL: `${rootUrl}/users/auth/google/callback`,
   profileFields: ['id', 'displayName', 'name', 'emails']
 },
   async (accessToken, refreshToken, profile, callBack) => {
