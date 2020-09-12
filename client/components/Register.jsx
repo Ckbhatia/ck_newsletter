@@ -114,8 +114,8 @@ const Register = (props) => {
           <div className="social-login-btn-container">
             <button className="social-btn" onClick={() => { handleSocialLogin("google") }}><FaGoogle /></button>
             <button className="social-btn" onClick={() => { handleSocialLogin("github") }}><FaGithub /></button>
-            <button className="social-btn" onClick={() => { handleSocialLogin("facebook") }}><FaFacebookF /></button>
-            <button className="social-btn" onClick={() => { handleSocialLogin("twitter") }}><FaTwitter /></button>
+            {/* <button className="social-btn" onClick={() => { handleSocialLogin("facebook") }}><FaFacebookF /></button>
+            <button className="social-btn" onClick={() => { handleSocialLogin("twitter") }}><FaTwitter /></button> */}
           </div>
         </div>
       </div>
