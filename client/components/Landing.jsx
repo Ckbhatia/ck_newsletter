@@ -1,8 +1,39 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Context from "./Context";
+/**
+ * Get cookie string value with passed key
+ * @param {string} key
+ * @return {string} token 
+ */
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
-export default function Landing() {
+const Landing = props => {
+
+  const { fetchUser, isAuthenticated } = useContext(Context);
+
+  useEffect(() => {
+    // TODO: put token inside the cookie and access from there
+    const token = getCookie("userToken");
+    if (token && !isAuthenticated) {
+      localStorage.setItem("userToken", JSON.stringify(token));
+      if (!isAuthenticated) {
+        console.log("fetch called")
+        fetchUser(token, redirect);
+      }
+    }
+  }, []);
+
+  const redirect = (path) => {
+    props.history.push(path);
+  }
+
   return (
     <Div className="landing-page-main-container wrapper">
       <div className="front-container">
@@ -35,7 +66,7 @@ export default function Landing() {
                 y1="740.55"
                 x2="636.83"
                 y2="204.8"
-                // xlink:href="#47567f34-21cc-4103-b039-7b07a02a692b"
+              // xlink:href="#47567f34-21cc-4103-b039-7b07a02a692b"
               />
             </defs>
             {/* <title>newsletter</title> */}
@@ -409,6 +440,8 @@ export default function Landing() {
     </Div>
   );
 }
+
+export default withRouter(Landing);
 
 const Div = styled.div`
   .front-container {
