@@ -8,7 +8,9 @@ module.exports = social_controller = async (req, res) => {
     if (!token) {
       res.redirect("/login");
     }
-    res.redirect(`${rootUrl}/?token=${token}`);
+    res.cookie("userToken", token);
+    // res.redirect(`${rootUrl}/?token=${token}`);
+    res.redirect(rootUrl);
   }
   catch (err) {
     res.redirect("/login");
