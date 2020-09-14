@@ -8,7 +8,8 @@ module.exports = social_controller = async (req, res) => {
     if (!token) {
       res.redirect("/login");
     }
-    res.cookie("userToken", token);
+    // res.cookie("userToken", token);
+    res.cookie("userToken", token, { domain: 'https://cknewsletter.tech', secure: true });
     // res.redirect(`${rootUrl}/?token=${token}`);
     res.redirect(rootUrl);
   }
