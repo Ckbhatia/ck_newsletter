@@ -9,7 +9,7 @@ const social_controller = require('../controllers/social_controller');
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 // Static urls are needed to be updated
-const rootUrl = process.env.NODE_ENV == "production" ? "https://cknewsletter.tech" : "http://localhost:3000";
+const rootUrl = process.env.NODE_ENV == "production" ? "https://cknewsletter.herokuapp.com" : "http://localhost:3000";
 
 router.use(passport.initialize());
 
