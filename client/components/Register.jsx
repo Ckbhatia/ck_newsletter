@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
+import { FaGithub, FaGoogle, FaFacebookF, FaTwitter } from 'react-icons/fa';
 import axios from "axios";
 import config from "../config";
 
 // Axios configuration
-axios.defaults.baseURL =
-  process.env.NODE_ENV === "production"
-    ? config.productionRootURL
-    : "http://localhost:3000/";
+const rootUrl = process.env.NODE_ENV === "production"
+  ? config.productionRootURL
+  : "http://localhost:3000";
+
+axios.defaults.baseURL = rootUrl;
 
 const Register = (props) => {
   const [name, updateName] = useState("");
@@ -37,6 +39,13 @@ const Register = (props) => {
     } catch (err) {
       updateError(true);
     }
+  };
+
+  const handleSocialLogin = (app) => {
+    window.open(
+      `${rootUrl}/users/auth/${app}`,
+      "_self"
+    );
   };
 
   return (
@@ -98,6 +107,17 @@ const Register = (props) => {
             <input className="submit-btn" type="submit" value="Register" />
           </form>
         </div>
+        <div className="social-login-container">
+          <h2 className="social-login-heading">
+            Or, use another account:
+          </h2>
+          <div className="social-login-btn-container">
+            <button className="social-btn" onClick={() => { handleSocialLogin("google") }}><FaGoogle /></button>
+            <button className="social-btn" onClick={() => { handleSocialLogin("github") }}><FaGithub /></button>
+            {/* <button className="social-btn" onClick={() => { handleSocialLogin("facebook") }}><FaFacebookF /></button>
+            <button className="social-btn" onClick={() => { handleSocialLogin("twitter") }}><FaTwitter /></button> */}
+          </div>
+        </div>
       </div>
     </Div>
   );
@@ -133,6 +153,32 @@ const Div = styled.div`
     margin: 0.5rem 0;
     &:hover {
       color: #131217;
+    }
+  }
+
+  .social-login-container {
+    margin: 2rem 1.2rem;
+    .social-login-heading {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .social-login-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: space-between;
+    .social-btn {
+      font-size: 1.6rem;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      margin: 10px 20px;
+      &:hover {
+        background-color: rgba(234, 234, 234, 0.9);
+border-radius: 5px;
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 import axios from "axios";
 import Context from "./Context";
@@ -6,13 +6,15 @@ import Layout from "./Layout";
 import Loader from "./Loader";
 import config from "../config";
 
-const Login = lazy(() => import("./Login"));
-const Register = lazy(() => import("./Register"));
-const Profile = lazy(() => import("./Profile"));
-const Dashboard = lazy(() => import("./Dashboard"));
-const Project = lazy(() => import("./Project"));
-const EditProject = lazy(() => import("./EditProject"));
-const PageNotFound = lazy(() => import("./PageNotFound"));
+import Landing from "./Landing";
+import Login from "./Login";
+import Register from "./Register";
+import Profile from "./Profile";
+import Dashboard from "./Dashboard";
+import Project from "./Project";
+import EditProject from "./EditProject";
+import PageNotFound from "./PageNotFound";
+import Docs from "./Docs";
 
 // Axios configuration
 axios.defaults.baseURL =
@@ -26,6 +28,7 @@ const App = (props) => {
   const [projectData, updateProjectData] = useState(null);
   const [error, updateError] = useState(null);
   const [isFetchingUser, updateFetchingUser] = useState(false);
+  const [isAuthenticated, updateAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
@@ -35,7 +38,7 @@ const App = (props) => {
     }
   }, []);
 
-  const fetchUser = async (token) => {
+  const fetchUser = async (token, redirect) => {
     // Update fetchingUser
     updateFetchingUser(true);
     try {
@@ -47,8 +50,10 @@ const App = (props) => {
       if (status === 200) {
         // Update fetchingUser
         updateFetchingUser(false);
+        updateAuthenticated(true);
         // Set the user
         await updateUser(data.user);
+        if (redirect) redirect("/dashboard")
       } else {
         // Clear the invalid tokens and redirect to the login
         localStorage.clear();
@@ -85,14 +90,19 @@ const App = (props) => {
   };
 
   const handleLogout = () => {
+    updateAuthenticated(false);
+    // Clear the token cookie
+    document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     updateUser(null);
     updateProjects(null);
     localStorage.clear();
   };
 
   const getSelectedProject = async (id) => {
-    const project = await projects.filter((project) => project._id === id);
-    updateProjectData(project[0]);
+    if (projects) {
+      const project = await projects.filter((project) => project._id === id);
+      updateProjectData(project[0]);
+    }
   };
 
   const deleteProject = async (id) => {
@@ -145,11 +155,19 @@ const App = (props) => {
           path="/dashboard"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <Dashboard projects={projects} error={error} />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <Dashboard projects={projects} error={error} />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/docs"
+          render={() => {
+            return (
+              <Layout>
+                <Docs />
+              </Layout>
             );
           }}
         />
@@ -158,15 +176,14 @@ const App = (props) => {
           path="/project/:id"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <Project
-                    projectData={projectData}
-                    deleteProject={deleteProject}
-                    getSelectedProject={getSelectedProject}
-                  />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <Project
+                  projects={projects}
+                  projectData={projectData}
+                  deleteProject={deleteProject}
+                  getSelectedProject={getSelectedProject}
+                />
+              </Layout>
             );
           }}
         />
@@ -174,11 +191,9 @@ const App = (props) => {
           path="/account/profile"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <Profile user={user} />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <Profile user={user} />
+              </Layout>
             );
           }}
         />
@@ -186,11 +201,9 @@ const App = (props) => {
           path="/projects/create"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <EditProject fetchProjects={fetchProjects} />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <EditProject fetchProjects={fetchProjects} />
+              </Layout>
             );
           }}
         />
@@ -198,15 +211,14 @@ const App = (props) => {
           path="/project/:id/edit"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <EditProject
-                    fetchProjects={fetchProjects}
-                    projectData={projectData}
-                    getSelectedProject={getSelectedProject}
-                  />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <EditProject
+                  projects={projects}
+                  fetchProjects={fetchProjects}
+                  projectData={projectData}
+                  getSelectedProject={getSelectedProject}
+                />
+              </Layout>
             );
           }}
         />
@@ -214,11 +226,9 @@ const App = (props) => {
           path="*"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <PageNotFound homeLink={"/dashboard"} />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <PageNotFound homeLink={"/dashboard"} />
+              </Layout>
             );
           }}
         />
@@ -235,24 +245,28 @@ const App = (props) => {
           render={() => {
             return (
               <Layout>
-                <h1>Landing page</h1>
+                <Landing />
               </Layout>
             );
           }}
         />
-
+        <Route
+          path="/docs"
+          render={() => {
+            return (
+              <Layout>
+                <Docs />
+              </Layout>
+            );
+          }}
+        />
         <Route
           path="/login"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <Login
-                    updateUser={updateUser}
-                    fetchProjects={fetchProjects}
-                  />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <Login updateUser={updateUser} fetchProjects={fetchProjects} />
+              </Layout>
             );
           }}
         />
@@ -260,11 +274,9 @@ const App = (props) => {
           path="/register"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <Register />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <Register />
+              </Layout>
             );
           }}
         />
@@ -272,11 +284,9 @@ const App = (props) => {
           path="*"
           render={() => {
             return (
-              <Suspense fallback={<Loader />}>
-                <Layout>
-                  <PageNotFound homeLink={"/"} />
-                </Layout>
-              </Suspense>
+              <Layout>
+                <PageNotFound homeLink={"/"} />
+              </Layout>
             );
           }}
         />
@@ -285,8 +295,10 @@ const App = (props) => {
   };
 
   return (
-    <Context.Provider value={{ user, projects, handleLogout }}>
+    <Context.Provider value={{ isAuthenticated, user, fetchUser, projects, handleLogout }}>
       {isFetchingUser || user ? privateRoutes() : publicRoutes()}
+      {/* {isFetchingUser && <Layout><Loader /></Layout> || isAuthenticated ? privateRoutes() : publicRoutes()} */}
+      {/* {isAuthenticated ? privateRoutes() : publicRoutes()} */}
     </Context.Provider>
   );
 };

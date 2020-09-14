@@ -7,11 +7,12 @@ import ProjectForm from "./ProjectForm";
 
 // This component works for both, create project and edit project.
 function EditProject({
+  projects,
   fetchProjects,
   projectData,
   getSelectedProject,
   history,
-  match
+  match,
 }) {
   const [status, updateStatus] = useState(null);
 
@@ -20,7 +21,7 @@ function EditProject({
       const id = match.params.id;
       getSelectedProject(id);
     }
-  }, []);
+  }, [projects]);
 
   const handleSubmit = async (
     name,
@@ -37,12 +38,12 @@ function EditProject({
           name,
           siteUrl,
           isCustomTemplate,
-          customTemplateData
+          customTemplateData,
         },
         {
           headers: {
-            Authorization: token
-          }
+            Authorization: token,
+          },
         }
       );
       if (status === 201) {
@@ -56,7 +57,7 @@ function EditProject({
     } catch (err) {
       await updateStatus({
         currentStatus: false,
-        msg: "Project name or site url is duplicate"
+        msg: "Project name or site url is duplicate",
       });
       setTimeout(() => updateStatus(null), 3000);
     }
@@ -79,12 +80,12 @@ function EditProject({
           name,
           siteUrl,
           isCustomTemplate,
-          customTemplateData
+          customTemplateData,
         },
         {
           headers: {
-            Authorization: token
-          }
+            Authorization: token,
+          },
         }
       );
 
@@ -99,7 +100,7 @@ function EditProject({
     } catch (err) {
       await updateStatus({
         currentStatus: false,
-        msg: "Project name or site url is duplicate"
+        msg: "Project name or site url is duplicate",
       });
       setTimeout(() => updateStatus(null), 3000);
     }

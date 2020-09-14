@@ -1,5 +1,5 @@
 const config = {
-  productionRootURL: "https://ck-newsletter.herokuapp.com"
+  productionRootURL: "https://cknewsletter.herokuapp.com",
 };
 
 export default config;

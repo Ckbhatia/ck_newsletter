@@ -11,7 +11,7 @@ router.get("*", function (req, res) {
       ? `/dist/bundle/bundle.js`
       : "/static/bundle.js";
   res.render("index", {
-    title: "Ck newsletter | Automate it",
+    title: "Ck newsletter | Connected",
     jsPath,
     cssPath,
   });
