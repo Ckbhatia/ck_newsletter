@@ -6,7 +6,10 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const expressStaticGzip = require("express-static-gzip");
 const cors = require("cors");
-require('dotenv').config()
+
+if(process.env.NODE_ENV === "development") {
+  require('dotenv').config()
+}
 
 const whiteList = [process.env.mainUrl, process.env.netlify, process.env.heroku, process.env.localhost];
 
