@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
+if(process.env.NODE_ENV === "development") {
+  require('dotenv').config()
+}
+
 /**
  * Generates JWT token
  * @param {string}

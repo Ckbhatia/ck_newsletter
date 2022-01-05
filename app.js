@@ -7,8 +7,21 @@ const mongoose = require("mongoose");
 const expressStaticGzip = require("express-static-gzip");
 const cors = require("cors");
 
+if(process.env.NODE_ENV === "development") {
+  require('dotenv').config()
+}
+
+const whiteList = [process.env.mainUrl, process.env.netlify, process.env.heroku, process.env.localhost];
+
 const corsOptions = {
-  origin: "https://cknewsletter.tech",
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) !== -1) {
+
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -84,7 +97,7 @@ if (process.env.NODE_ENV === "development") {
 
 app.use("/api/v1/projects", cors(), projectsRouter);
 app.use("/users/auth", cors(corsOptions), socialLoginRouter);
-app.use("/users", cors(corsOptions), usersRouter);
+app.use("/users",cors(corsOptions), usersRouter);
 app.use("/projects", cors(corsOptions), projectsRouter);
 app.use("/", cors(corsOptions), indexRouter);
 
