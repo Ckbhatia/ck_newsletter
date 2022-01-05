@@ -53,10 +53,12 @@ This service aims to aid small and mid-sized bloggers to automate the process of
 
 1. Create a fetch request with <code>PATCH</code> method.
 2. Need to put two properties into the payload ( body ).
-   <code>{
-   "subscriber": "\***\***\*@gmail.com",
-   "apiKey": "15870449476249g9uo\*\*\*\*"
-   }</code>
+```
+  {
+   "subscriber": "*******@gmail.com",
+   "apiKey": "15870449476249g9uo****"
+  }
+```
 
    - The <code>subscriber</code> should be dynamic. It should be your subscriber's email.
    - The <code>apiKey</code> should be your project's API Key.
@@ -69,10 +71,13 @@ This service aims to aid small and mid-sized bloggers to automate the process of
 
 1. Create a fetch request with <code>PATCH</code> method.
 2. Need to put two properties into the payload ( body ).
-   <code>{
-   "slug": "vue",
-   "apiKey": "15870449476249g9uo\*\*\*\*"
-   }</code>
+
+```
+  {
+    "slug": "vue",
+    "apiKey": "15870449476249g9uo\*\*\*\*"
+  }
+```
 
    - Replace the apiKey with your project's API key.
    - Slug should be dynamic. Your article slug or id should be the value of slug key.
