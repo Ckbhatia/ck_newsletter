@@ -93,7 +93,7 @@ This is a BE repo of the Ck newsletter project. Front End repo: https://github.c
 
 ## Support
 
-Feel free to reach out to me on chetansain86@gmail.com
+Feel free to reach out to me on cknewsletterservice@gmail.com
 
 # License
 
