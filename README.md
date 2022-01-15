@@ -9,6 +9,8 @@
 
 This service aims to aid small and mid-sized bloggers to automate the process of delivering newsletters to subscribers. Blogger needs to hook two requests to their blog code and focus on writing amazing blogs. Your subscribers are going to receive the newsletters when you publish a new.
 
+This is a BE repo of the Ck newsletter project. Front End repo: https://github.com/Ckbhatia/ck_newsletter_front_end
+
 ## Table of contents:
 
 - How to create an account?
@@ -74,7 +76,7 @@ This service aims to aid small and mid-sized bloggers to automate the process of
 
 ```
   {
-    "slug": "vue",
+    "slug": "get-started-with-vue",
     "apiKey": "15870449476249g9uo\*\*\*\*"
   }
 ```
@@ -82,7 +84,7 @@ This service aims to aid small and mid-sized bloggers to automate the process of
    - Replace the apiKey with your project's API key.
    - Slug should be dynamic. Your article slug or id should be the value of slug key.
 
-3. Notice that your slug will be used to create the link to your article. For Ex: "https://myblog.com/blog/vue"
+3. Notice that your slug will be used to create the link to your article. For Ex: "https://myblog.com/blog/get-started-with-vue"
 4. Now you can make a patch request with these data on this endpoint: https://cknewsletter.herokuapp.com/api/v1/projects/slug
 5. Place this patch request code to your blog code where it makes this request every time whenever you publish a new article.
 6. It will push the newsletter to your subscribers of particular project.
