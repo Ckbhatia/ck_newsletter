@@ -9,6 +9,7 @@ const template = require("../utils/template");
 const getOne = (model, reqType) => async (req, res) => {
   // Action for login
   if (reqType === "login") {
+    console.log('in login');
     const { email, username, password } = req.body;
     // validate body data
     const errmsg = await userValidation(null, email, username, password);

@@ -48,7 +48,7 @@ mongoose.connect(
   process.env.DB_CONNECT,
   { useUnifiedTopology: true, useNewUrlParser: true },
   (err) => {
-    err ? console.log(err) : console.log("DB connected");
+    err ? console.log(err, 'err') : console.log("DB connected");
   }
 );
 
