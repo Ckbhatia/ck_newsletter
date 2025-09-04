@@ -3,8 +3,15 @@ node_modules
 .env
 
 # Yarn files
-yarn.lock
 yarn-error.log
-
-# Package-lock
-package-lock.json
+.cache
+.bin
+.bash_history
+.yarnrc
+.eslintrc.json
+.babelrc
+.glitchdotcom.json
+.prettierrc
+.prettierignore
+/dist
+.node-gyp
