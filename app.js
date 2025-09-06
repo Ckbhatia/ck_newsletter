@@ -61,7 +61,7 @@ app.use(
   expressStaticGzip(path.join(__dirname, "dist/bundle"), {
     enableBrotli: true,
     orderPreference: ["br", "gz"],
-    setHeaders: function (res, path) {
+    setHeaders: function (res) {
       res.setHeader("Cache-Control", "public, max-age=31536000");
     },
   })
@@ -101,12 +101,12 @@ app.use("/projects", cors(corsOptions), projectsRouter);
 app.use("/", cors(corsOptions), indexRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (_, __, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
