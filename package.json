@@ -42,7 +42,7 @@
     "rimraf": "^3.0.2",
     "sass-loader": "^8.0.2",
     "styled-components": "^5.0.1",
-    "webpack": "^4.42.0",
+    "webpack": "^5.106.2",
     "webpack-cli": "^3.3.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
