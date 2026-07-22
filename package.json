@@ -23,7 +23,7 @@
     "cors": "^2.8.5",
     "css-loader": "^3.4.2",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
+    "ejs": "~3.1.10",
     "express": "~4.16.1",
     "express-static-gzip": "^2.0.6",
     "http-errors": "~1.6.3",
